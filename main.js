@@ -3,7 +3,8 @@ import {LinkedList, Node} from "./linked-list.js"
 class HashMap {
     constructor(buckets = new Array(16)){
         this.buckets = buckets;
-        this.loadFactor = 0.75;
+        this.capacity = 16;
+        this.loadFactor = 0.75
     }
     hash(key){
         let hashCode = 0;
@@ -19,15 +20,7 @@ class HashMap {
     }
     set(key, value){
         let bucket = this.buckets[this.hash(key)]
-        if((this.length() / this.buckets.length) >= this.loadFactor){
-            let prevKeys = this.keys();
-            let prevValues = this.values();
-            let range = prevKeys.length
-            this.buckets = new Array(this.buckets.length * 2);            
-            for(let i = 0; i < range; i++){
-                this.set(prevKeys[i], prevValues[i])
-            }
-        }
+       this.growMap()
         if (bucket === undefined) {
             this.buckets[this.hash(key)] = new LinkedList()
         }
@@ -102,6 +95,19 @@ class HashMap {
             array.push([this.buckets[index].list.key, this.buckets[index].list.value])
         }
         return array
+    }
+    growMap(){
+        if((this.length() / this.capacity) >= this.loadFactor){
+            let prevKeys = this.keys();
+            let prevValues = this.values();
+            let range = prevKeys.length
+            this.buckets = new Array(this.buckets.length * 2);
+            this.capacity *= 2            
+            for(let i = 0; i < range; i++){
+                this.set(prevKeys[i], prevValues[i])
+            }
+
+        }
     }
 }
 
