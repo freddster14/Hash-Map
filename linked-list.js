@@ -54,14 +54,12 @@ class LinkedList {
     contains(key){
         let current = this.list;
         for(let i = 0; i < this.size(); i++){
-
             if(current.key === key){
                 return true
             }
             current = current.nextNode;
         }
         return false
-
     }
     find(key){
         let current = this.list;
@@ -72,7 +70,6 @@ class LinkedList {
             current = current.nextNode;
         }
         return current
-
     }
     toString(){
         let current = this.list;
@@ -107,8 +104,6 @@ class LinkedList {
         }
         current.nextNode = nextIndex
     }
-
-
 }
 
 class Node{
@@ -119,4 +114,4 @@ class Node{
     }
 }
 
-export {LinkedList, Node}
+export {LinkedList}

@@ -1,4 +1,4 @@
-import {LinkedList, Node} from "./linked-list.js"
+import {LinkedList} from "./linked-list.js"
 
 class HashMap {
     constructor(buckets = new Array(16)){
@@ -15,7 +15,7 @@ class HashMap {
         }
         if (hashCode < 0 || hashCode >= this.buckets.length) {
             throw new Error("Trying to access index out of bound");
-          }
+        }
         return hashCode;
     }
     set(key, value){
@@ -24,14 +24,12 @@ class HashMap {
         if (bucket === undefined) {
             this.buckets[this.hash(key)] = new LinkedList()
         }
+        //Adds Node to end of List
         this.buckets[this.hash(key)].append(key, value)
-        
     }
     get(key){
         let node = this.buckets[this.hash(key)].list;
-        if (node === undefined){
-            return null
-        } 
+        if (node === undefined){return null} 
         return node.value;
     }
     has(key){
@@ -41,6 +39,7 @@ class HashMap {
     }
     remove(key){
         if(this.has(key)){
+            //Node index in List
             let index = this.buckets[this.hash(key)].find(key)
             delete this.buckets[this.hash(key)].list[index]
             return true
@@ -61,14 +60,11 @@ class HashMap {
         let array = []
         for(let index in this.buckets){
             let listSize = this.buckets[index].size();
-            if (listSize > 1) {
-                let current = this.buckets[index].list
-                for(let i = 0; i < listSize; i++){
-                    array.push(current.key)
-                    current = current.nextNode
-                }
-            }else{
-                array.push(this.buckets[index].list.key)
+            let current = this.buckets[index].list
+            //Goes through Linked List keys
+            for(let i = 0; i < listSize; i++){
+                array.push(current.key)
+                current = current.nextNode
             }
         }
         return array
@@ -77,14 +73,11 @@ class HashMap {
         let array = []
         for(let index in this.buckets){
             let listSize = this.buckets[index].size();
-            if(listSize > 1) {
-                let current = this.buckets[index].list
-                for(let i = 0; i < listSize; i++){
-                    array.push(current.value)
-                    current = current.nextNode
-                }
-            } else {
-                array.push(this.buckets[index].list.value)
+            let current = this.buckets[index].list
+            //Goes through Linked List values
+            for(let i = 0; i < listSize; i++){
+                array.push(current.value)
+                current = current.nextNode
             }
         }
         return array
@@ -92,7 +85,12 @@ class HashMap {
     entries(){
         let array = []
         for(let index in this.buckets){
-            array.push([this.buckets[index].list.key, this.buckets[index].list.value])
+            let listSize = this.buckets[index].size();
+            let current = this.buckets[index].list
+            for(let i = 0; i < listSize; i++){
+                array.push([current.key, current.value])
+                current = current.nextNode
+            }
         }
         return array
     }
@@ -106,7 +104,6 @@ class HashMap {
             for(let i = 0; i < range; i++){
                 this.set(prevKeys[i], prevValues[i])
             }
-
         }
     }
 }
@@ -128,8 +125,6 @@ hashMap.set("ohnthject", "Feelke im 1/3")
 hashMap.set("G fggiogbjb", "Feel like im 1/3")
 hashMap.set("Projfgffect", "Feel like 1/3")
 hashMap.set("Projfgffect", "Feel like 1/3")
-
-
 
 console.log(hashMap.get("Work"))
 console.log(hashMap.remove("Project"))
